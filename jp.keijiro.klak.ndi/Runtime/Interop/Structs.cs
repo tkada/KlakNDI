@@ -68,6 +68,20 @@ public struct VideoFrame
     public long Timestamp;
 }
 
+[StructLayout(LayoutKind.Sequential)]
+public struct AudioFrame
+{
+    public int SampleRate;
+    public int NoChannels;
+    public int NoSamples;
+    public long Timecode;
+    public FourCC FourCC;
+    public IntPtr Data;
+    public int ChannelStride;
+    public IntPtr Metadata;
+    public long Timestamp;
+}
+
 // Tally data structure (equivalent to NDIlib_tally_t)
 [StructLayout(LayoutKind.Sequential)]
 public struct Tally
