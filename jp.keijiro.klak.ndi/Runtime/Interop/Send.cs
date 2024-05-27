@@ -35,6 +35,9 @@ public class Send : SafeHandleZeroOrMinusOneIsInvalid
     public bool SetTally(out Tally tally, uint timeout)
       => _SetTally(this, out tally, timeout);
 
+    public void SendAudio(in AudioFrame data)
+      => _SendAudio(this, data);
+
     #endregion
 
     #region Unmanaged interface
@@ -68,7 +71,10 @@ public class Send : SafeHandleZeroOrMinusOneIsInvalid
     [return: MarshalAs(UnmanagedType.U1)]
     static extern bool _SetTally(Send send, out Tally tally, uint timeout);
 
+    [DllImport(Config.DllName, EntryPoint = "NDIlib_send_send_audio_v3")]
+    static extern void _SendAudio(Send send, in AudioFrame data);
+
     #endregion
-}
+    }
 
 } // namespace Klak.Ndi.Interop
