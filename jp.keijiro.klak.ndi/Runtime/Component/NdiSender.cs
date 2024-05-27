@@ -232,6 +232,7 @@ public sealed partial class NdiSender : MonoBehaviour
 
     private void OnAudioFilterRead(float[] data, int channels)
     {
+        if(_send == null || _send.IsInvalid || _send.IsClosed) return;
 
         if (data.Length == 0 || channels == 0) return;
 
@@ -244,14 +245,12 @@ public sealed partial class NdiSender : MonoBehaviour
             {
                 settingsChanged = true;
                 numSamples = tempSamples;
-                //PluginEntry.SetNumSamples(_plugin, numSamples);
             }
 
             if (channels != numChannels)
             {
                 settingsChanged = true;
                 numChannels = channels;
-                //PluginEntry.SetAudioChannels(_plugin, channels);
             }
 
             if (settingsChanged)
@@ -269,7 +268,6 @@ public sealed partial class NdiSender : MonoBehaviour
 
             fixed (float* p = samples)
             {
-                //PluginEntry.SetAudioData(_plugin, (IntPtr)p);
                 var frame = new Interop.AudioFrame
                 {
                     SampleRate = 48000,
@@ -280,13 +278,8 @@ public sealed partial class NdiSender : MonoBehaviour
                     Data = (System.IntPtr)p
                 };
 
-                if (_send != null)
-                {
-                    _send.SendAudio(frame);
-                }
+                _send?.SendAudio(frame);
             }
-
-            //if (audioEnabled && pluginReady) PluginEntry.SendAudio(_plugin);
         }
     }
 
